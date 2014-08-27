@@ -1,0 +1,285 @@
+'\" t
+.\"     Title: pdns_recursor
+.\"    Author: [see the "AUTHOR" section]
+.\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
+.\"      Date: 08/27/2014
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "PDNS_RECURSOR" "1" "08/27/2014" "\ \&" "\ \&"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+pdns_recursor \- high\-performance, simple and secure recursing nameserver
+.SH "SYNOPSIS"
+.sp
+\fIpdns_recursor\fR [\-\-daemon] [\-\-local\-address] [\-\-help, \-h] [\-\-allow\-from]
+.SH "DESCRIPTION"
+.sp
+pdns_recursor(1) is a high performance, simple and secure recursing nameserver\&. It currently powers over two million internet connections\&.
+.sp
+The recursor is configured via a configuration file, but each item in that file can be overridden on the command line\&.
+.sp
+This manpage lists the core set of features needed to get the PowerDNS recursor working, for full and up to date details head to \m[blue]\fBhttp://doc\&.powerdns\&.com/built\-in\-recursor\&.html\fR\m[]
+.SH "EXAMPLES"
+.sp
+To listen on 1\&.2\&.3\&.4 and allow the 1\&.2\&.3\&.0/8 subnet to recurse, and run as a daemon, execute:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+# pdns_recursor \-\-local\-address=1\&.2\&.3\&.4 \-\-allow\-from=1\&.2\&.3\&.0/8 \-\-daemon
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+To stop the recursor by hand, run:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+# rec_control quit
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+Alternatively, use the init\&.d script provided\&.
+.fi
+.if n \{\
+.RE
+.\}
+.SH "OPTIONS"
+.sp
+For authoritative listing of options, consult the documentation referenced above\&.
+.PP
+\-\-aaaa\-additional\-processing
+.RS 4
+turn on to do AAAA additional processing (slow)
+.RE
+.PP
+\-\-allow\-from
+.RS 4
+If set, only allow these comma separated netmasks to recurse
+.RE
+.PP
+\-\-auth\-can\-lower\-ttl
+.RS 4
+Authoritative zones can transmit a TTL value that is lower than that specified in the parent zone\&. This is called a
+\fIdelegation inconsistency\fR\&. To follow RFC 2181 paragraphs 5\&.2 and 5\&.4 to the letter, enable this feature\&. This will mean a slight deterioration of performance, and it will not solve any problems, but does make the recursor more standards compliant\&. Not recommended unless you have to tick an
+\fIRFC 2181 compliant\fR
+box\&. Off by default\&.
+.RE
+.PP
+\-\-auth\-zones
+.RS 4
+Comma separated list of
+\fIzonename=filename\fR
+pairs\&. Zones read from these files are served authoritatively\&. Example: auth\-zones= ds9a\&.nl=/var/zones/ds9a\&.nl, powerdns\&.com=/var/zones/powerdns\&.com\&. Available since 3\&.1\&.
+.RE
+.PP
+\-\-chroot
+.RS 4
+switch to chroot jail
+.RE
+.PP
+\-\-client\-tcp\-timeout
+.RS 4
+Timeout in seconds when talking to TCP clients
+.RE
+.PP
+\-\-config\-dir
+.RS 4
+Location of configuration directory (recursor\&.conf)
+.RE
+.PP
+\-\-daemon
+.RS 4
+Operate as a daemon
+.RE
+.PP
+\-\-delegation\-only
+.RS 4
+Which domains we only accept delegations from
+.RE
+.PP
+\-\-entropy\-source
+.RS 4
+Where to read new entropy from, defaults to /dev/urandom\&.
+.RE
+.PP
+\-\-export\-etc\-hosts
+.RS 4
+If set, this flag will export the host names and IP addresses mentioned in /etc/hosts\&. Available since 3\&.1\&.
+.RE
+.PP
+\-\-fork
+.RS 4
+If set, fork the daemon for possible double performance
+.RE
+.PP
+\-\-forward\-zones
+.RS 4
+Comma separated list of
+\fIzonename=IP\fR
+pairs\&. Queries for zones listed here will be forwarded to the IP address listed\&. forward\-zones= ds9a\&.nl=213\&.244\&.168\&.210, powerdns\&.com=127\&.0\&.0\&.1\&. Available since 3\&.1\&. For more details, see the manual\&.
+.RE
+.PP
+\-\-forward\-zones\-file
+.RS 4
+listed here will be forwarded to the IP address listed\&. One zone per line, like: ds9a\&.nl=213\&.244\&.168\&.210 Available since 3\&.1\&.5\&. For more details, see the manual\&.
+.RE
+.PP
+\-\-hint\-file
+.RS 4
+If set, load root hints from this file
+.RE
+.PP
+\-\-local\-address
+.RS 4
+IP addresses to listen on, separated by spaces or commas
+.RE
+.PP
+\-\-local\-port
+.RS 4
+port to listen on
+.RE
+.PP
+\-\-log\-common\-errors
+.RS 4
+If we should log rather common errors
+.RE
+.PP
+\-\-max\-cache\-entries
+.RS 4
+If set, maximum number of entries in the main cache
+.RE
+.PP
+\-\-max\-negative\-ttl
+.RS 4
+maximum number of seconds to keep a negative cached entry in memory
+.RE
+.PP
+\-\-max\-tcp\-clients
+.RS 4
+Maximum number of simultaneous TCP clients
+.RE
+.PP
+\-\-max\-tcp\-per\-client
+.RS 4
+If set, maximum number of TCP sessions per client (IP address)
+.RE
+.PP
+\-\-query\-local\-address
+.RS 4
+Source IP address for sending queries
+.RE
+.PP
+\-\-query\-local\-address6
+.RS 4
+Send out local IPv6 queries from this address\&. Disabled by default, which also disables outgoing IPv6 support\&. A useful setting is
+\fI::0\fR\&.
+.RE
+.PP
+\-\-quiet
+.RS 4
+Suppress logging of questions and answers
+.RE
+.PP
+\-\-remotes\-ringbuffer\-entries
+.RS 4
+maximum number of packets to store statistics for
+.RE
+.PP
+\-\-server\-id
+.RS 4
+Returned when queried for
+\fIserver\&.id\fR
+TXT, defaults to hostname
+.RE
+.PP
+\-\-serve\-rfc1918
+.RS 4
+On by default, this makes the server authoritatively aware of: 10\&.in\-addr\&.arpa, 168\&.192\&.in\-addr\&.arpa and 16\-31\&.172\&.in\-addr\&.arpa, which saves load on the AS112 servers\&. Individual parts of these zones can still be loaded or forwarded\&.
+.RE
+.PP
+\-\-setgid
+.RS 4
+If set, change group id to this gid for more security
+.RE
+.PP
+\-\-setuid
+.RS 4
+If set, change user id to this uid for more security
+.RE
+.PP
+\-\-single\-socket
+.RS 4
+If set, only use a single socket for outgoing queries
+.RE
+.PP
+\-\-socket\-dir
+.RS 4
+Where the controlsocket will live
+.RE
+.PP
+\-\-spoof\-nearmiss\-max
+.RS 4
+If non\-zero, assume spoofing after this many near misses
+.RE
+.PP
+\-\-trace
+.RS 4
+if we should output heaps of logging
+.RE
+.PP
+\-\-version\-string
+.RS 4
+string reported on version\&.pdns or version\&.bind
+.RE
+.SH "BUGS"
+.sp
+None known\&. File new ones at \m[blue]\fBhttp://wiki\&.powerdns\&.com\fR\m[]\&.
+.SH "AUTHOR"
+.sp
+Written by PowerDNS\&.COM BV, bert hubert, <\m[blue]\fBbert\&.hubert@netherlabs\&.nl\fR\m[]\&\s-2\u[1]\d\s+2> v3\&.0, 22 March 2008
+.SH "RESOURCES"
+.sp
+Website: \m[blue]\fBhttp://wiki\&.powerdns\&.com\fR\m[], \m[blue]\fBhttp://www\&.powerdns\&.com\fR\m[]
+.SH "SEE ALSO"
+.sp
+rec_control(1)
+.SH "COPYING"
+.sp
+Copyright \(co 2006 PowerDNS\&.COM BV\&. Free use of this software is granted under the terms of the GNU General Public License (GPL) version 2\&.
+.SH "NOTES"
+.IP " 1." 4
+bert.hubert@netherlabs.nl
+.RS 4
+\%mailto:bert.hubert@netherlabs.nl
+.RE

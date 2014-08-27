@@ -1,0 +1,214 @@
+'\" t
+.\"     Title: rec_control
+.\"    Author: [see the "AUTHOR" section]
+.\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
+.\"      Date: 08/27/2014
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "REC_CONTROL" "1" "08/27/2014" "\ \&" "\ \&"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+rec_control \- control pdns_recursor
+.SH "SYNOPSIS"
+.sp
+\fIrec_control\fR [\-\-help] [\-\-socket\-dir] [\-\-socket\-pid] command \&.\&.
+.SH "DESCRIPTION"
+.sp
+rec_control(1) allows the operator to control a running instance of the pdns_recursor\&.
+.sp
+The commands that can be passed to the recursor are described on \m[blue]\fBhttp://doc\&.powerdns\&.com/rec\-control\&.html\fR\m[]
+.SH "EXAMPLES"
+.sp
+To stop the recursor by hand, run:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+# rec_control quit
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+To dump the cache to disk, execute:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+# rec_control dump\-cache /tmp/the\-cache
+.fi
+.if n \{\
+.RE
+.\}
+.SH "OPTIONS"
+.PP
+\-\-help
+.RS 4
+provide this helpful message
+.RE
+.PP
+\-\-socket\-dir
+.RS 4
+Where the controlsocket will live
+.RE
+.PP
+\-\-socket\-pid
+.RS 4
+When running in SMP mode, pid of pdns_recursor to control
+.RE
+.PP
+\-\-timeout
+.RS 4
+Number of seconds to wait for the remote PowerDNS Recursor to respond\&. Set to 0 for infinite\&.
+.RE
+.SH "COMMANDS"
+.PP
+current\-queries
+.RS 4
+Shows the currently active queries\&.
+.RE
+.PP
+dump\-cache <filename>
+.RS 4
+Dumps the entire cache to the filename mentioned\&. This file should not exist already, PowerDNS will refuse to overwrite it\&. While dumping, the recursor will not answer questions\&.
+.RE
+.PP
+dump\-edns[status] <filename>
+.RS 4
+Dumps the EDNS status to the filename mentioned\&. This file should not exist already, PowerDNS will refuse to overwrite it\&. While dumping, the recursor will not answer questions\&.
+.RE
+.PP
+dump\-nsspeeds <filename>
+.RS 4
+Dumps the nameserver speed statistics to the filename mentioned\&. This file should not exist already, PowerDNS will refuse to overwrite it\&. While dumping, the recursor will not answer questions\&.
+.RE
+.PP
+get <statistic0> [statistic1]
+.RS 4
+Retrieve a statistic\&. For items that can be queried, see
+\m[blue]\fBhttp://doc\&.powerdns\&.com/recursor\-stats\&.html\fR\m[]
+.RE
+.PP
+get\-all
+.RS 4
+Retrieve all known statistics\&.
+.RE
+.PP
+get\-parameter <key0> [key1]
+.RS 4
+Retrieves the specified configuration parameter(s)\&.
+.RE
+.PP
+get\-qtypelist
+.RS 4
+Retrieves QType statistics\&. Queries from cache aren\(cqt being counted yet\&.
+.RE
+.PP
+help
+.RS 4
+Shows a list of supported commands\&.
+.RE
+.PP
+ping
+.RS 4
+Check if server is alive\&.
+.RE
+.PP
+quit
+.RS 4
+Request shutdown of the recursor
+.RE
+.PP
+quit\-nicely
+.RS 4
+Request nice shutdown of the recursor
+.RE
+.PP
+reload\-acls
+.RS 4
+Reloads ACLs\&.
+.RE
+.PP
+reload\-lua\-script [filename]
+.RS 4
+(Re)loads Lua script
+.RE
+.PP
+reload\-zones
+.RS 4
+Reload authoritative and forward zones\&. Retains current configuration in case of errors\&.
+.RE
+.PP
+set\-minimum\-ttl <value>
+.RS 4
+Set minimum\-ttl\-override\&.
+.RE
+.PP
+trace\-regex [regex]
+.RS 4
+Emit resolution trace for matching queries\&. Empty regex to disable trace\&.
+.RE
+.PP
+top\-remotes
+.RS 4
+Shows the top\-20 most active remote hosts\&. Statistics are over the last
+\fIremotes\-ringbuffer\-entries\fR
+queries, which defaults to 0\&.
+.RE
+.PP
+unload\-lua\-script
+.RS 4
+Unloads Lua script\&.
+.RE
+.PP
+wipe\-cache <domain0> [domain1]
+.RS 4
+Wipe entries from the cache\&. This is useful if, for example, an important server has a new IP address, but the TTL has not yet expired\&. Multiple domain names can be passed\&. Note that you must terminate a domain with a \&.! So to wipe powerdns\&.org, issue
+\fIrec_control wipe\-cache powerdns\&.org\&.\fR\&. Versions beyond 3\&.1 don\(cqt need the trailing dot\&. Consider not only wiping
+\fIwww\&.domain\&.com\&.\fR
+but also
+\fIdomain\&.com\&.\fR, as the cached nameservers or target of CNAME may continue to be undesired\&.
+.RE
+.SH "BUGS"
+.sp
+None known\&. File new ones at \m[blue]\fBhttps://github\&.com/PowerDNS/pdns/issues\fR\m[]\&.
+.SH "AUTHOR"
+.sp
+Written by PowerDNS\&.COM BV, bert hubert, <\m[blue]\fBbert\&.hubert@netherlabs\&.nl\fR\m[]\&\s-2\u[1]\d\s+2> v3\&.0, 19 April 2006
+.SH "RESOURCES"
+.sp
+Website: \m[blue]\fBhttp://wiki\&.powerdns\&.com\fR\m[], \m[blue]\fBhttp://www\&.powerdns\&.com\fR\m[]
+.SH "SEE ALSO"
+.sp
+pdns_recursor(1)
+.SH "COPYING"
+.sp
+Copyright \(co 2006\-2014 PowerDNS\&.COM BV\&. Free use of this software is granted under the terms of the GNU General Public License (GPL) version 2\&.
+.SH "NOTES"
+.IP " 1." 4
+bert.hubert@netherlabs.nl
+.RS 4
+\%mailto:bert.hubert@netherlabs.nl
+.RE
